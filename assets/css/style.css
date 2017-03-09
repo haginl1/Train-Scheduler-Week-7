@@ -8,7 +8,8 @@ body{
 	font-size: 18px;
 	color: #777;
 	line-height: 34px;
-	/*background-image: url("../images/background.jpg")*/
+  background-color: #999966; 
+	/*background-image: url("../images/background.jpg");*/
 }
 /* Remove the navbar's default margin-bottom and rounded borders */ 
 .navbar {
@@ -20,56 +21,64 @@ body{
 .row.content {height: 450px}
 
 /* Set gray background color and 100% height */
-.sidenav {
-  padding-top: 10px;
-  background-color: rgba(245, 245, 245, 0.4);
-  height: auto;
-  border-radius: 4px;
-  margin-top: 50px;
+.jumbotron img {
+  width: 100%;
+  border: 0 none;
+  opacity: .8;
+}
+.jumbotron h1 {
+  position: absolute;
+  top: 100px;
+  margin-bottom: 0;
+  padding: 15px;
+  font-family: 'Faster One', cursive;
+  color: darkblue;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 300;
+  
+  border-bottom: 0;
 }
 
 img {
-  width: 66%;   
-  height: 66%;
-  box-shadow: 10px 10px 5px #888888;
+  display: block;
+  width: 100%;   
+  height: 100%;
+  margin: auto;
+  box-shadow: 10px 10px 5px black;
+
 }
-#imgRating{
-  width: 200px;   
-  color:white;
-}
-.gif {
-  width: 200px;
-  height:200px;
-  margin: 10px;
-}
+
 .well{
   background-color: rgba(245, 245, 245, 0.4);
   height: auto;
   overflow:auto;
 }
-button{
+.btn-primary{
   margin:5px;
+  background-color: mediumpurple;
+  border-color: mediumpurple;
 }
 .navbar-header h2 {
 color:white;
 }
 
-#imageRatingContainer{
-  float:left;
-}
 
 th.tableTitle {
-  background: #337ab7;
+  background: mediumpurple;
   color: white;
 }
 table {
     *border-collapse: collapse; /* IE7 and lower */
     border-spacing: 0; 
-}
+    background-color: lightgrey;
+    color:black;
 
+}
 
 th:first-child {
     border-radius: 10px 0 0 0;
+    
 }
 
 th:last-child {
