@@ -16,29 +16,51 @@ var trainschedule;
 
   var ref = trainschedule.ref("trains")
   
-  ref.on('value', gotData, errData);
+  ref.on('value', gotData);
 
   function gotData(data){
 	  
 	  var trains = data.val();
 	  var keys = Object.keys(trains);
-	  
-	  var trainTable = $("#trainList").val(trains);
 	  for (var i=0; i < keys.length; i++){
 		  
-		  var k = keys[i];
-		  var trainName = trains[k].name;
-		  var destination = trains[k].destination;
-		  var firstTrainTime = trains[k].firstTrain;
-		  var frequency = trains[k].frequency;
-		   
-		  console.log(trains[k]);
+		var k = keys[i];
+		var trainName = trains[k].name;
+		var destination = trains[k].destination;
+		var firstTrainTime = trains[k].firstTrain;
+		console.log(firstTrainTime);
+		var frequency = trains[k].frequency;
+		
+		var currentTime = moment();
+		console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+		
+		var diffTime = moment().diff(moment.unix(firstTrainTime), "minutes");
+		console.log("DIFFERENCE IN TIME: " + diffTime);
+		
+		var tRemainder = diffTime % frequency;
+		console.log(tRemainder);
+
+		// Minute Until Train
+		var tMinutesTillTrain = frequency - tRemainder;
+		console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+		console.log(frequency);
+		console.log(tRemainder);
+
+		// Next Train
+		var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+		console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
+		var list = trains[k];
+			console.log(list);
+
+		//add the new train to the list
+		var tableEntry = $('<tr>');
+		 tableEntry.append('<td>'+ list.name +'</td>')
+		  .append('<td>'+ list.destination + '</td>')
+		  .append('<td>'+ list.frequency + '</td>')
+		  .append('<td>'+ moment(nextTrain).format("HH:mm") + '</td>')
+		  .append('<td>'+ tMinutesTillTrain +'</td>')
+		  $('#trainsList').append( tableEntry );  
 	  }
-  }
-
-
-  function errData(err) {
-
   }
 	//connect to the submit button to push the new train up to firebase///
 	$("#addTrain").on("click", function(){
@@ -46,21 +68,19 @@ var trainschedule;
 		//get the user inputs from the form
 		var trainName = $("#nameInput").val().trim();
 		var destination = $("#destinationInput").val().trim();
-		var firstTrainTime = $("#timeInput").val().trim();
+		var firstTrainTime = moment($("#timeInput").val().trim(), "HH:mm").format("X");
+		console.log("This is the unix time " + firstTrainTime);
 		var frequency = $("#frequencyInput").val().trim();
-
-
+		
 		//store the new train data temporarily
 		var newTrain = {
 			name: trainName,
 			destination: destination,
 			firstTrain: firstTrainTime,
-			frequency: frequency
-
-		}
+			frequency: frequency,
+		};
 		
 		ref.push(newTrain);
-	
 		//clear out the text boxes and ready for a new train
 		$("#nameInput").val("");
 		$("#destinationInput").val("");
@@ -68,7 +88,8 @@ var trainschedule;
 		$("#frequencyInput").val("");
 
 	});
-		//add the new train to the list 
 
+
+  
 
 });//end document.ready
