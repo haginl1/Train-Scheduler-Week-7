@@ -55,6 +55,7 @@ var trainschedule;
 			var trains = data.val();
 			var keys = Object.keys(trains);
 			//loop through the trains and get their values
+			$("#trainBody").empty();
 			for (var i=0; i < keys.length; i++){
 				var k = keys[i];
 				var trainName = trains[k].name;
@@ -93,14 +94,6 @@ var trainschedule;
 					"<td>" + moment(nextTrain).format("HH:mm") + "</td>" +
 					"<td>" + tMinutesTillTrain + "</td>" + "</tr>"
 					);
-				
-				// var tableEntry = $('<tr>');
-				// tableEntry.append('<td>'+ list.name +'</td>')
-				// .append('<td>'+ list.destination + '</td>')
-				// .append('<td>'+ list.frequency + '</td>')
-				// .append('<td>'+ moment(nextTrain).format("HH:mm") + '</td>')
-				// .append('<td>'+ tMinutesTillTrain +'</td>')
-				// $('#trainsList').append( tableEntry );  
 			}
 		}
 	
