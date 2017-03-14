@@ -1,7 +1,4 @@
 $( document ).ready(function() {   
-
-var trainschedule;
-
 	// Initialize Firebase
   var config = {
     apiKey: "AIzaSyDiPyIdVc-q9q3bqSvsUd1gmTJmb5NqgPw",
@@ -11,10 +8,12 @@ var trainschedule;
     messagingSenderId: "771315111"
   };
   
-  firebase.initializeApp(config);
- 
-
-
+	firebase.initializeApp(config);
+	//naming the database
+	var trainschedule;
+	trainschedule= firebase.database();
+	//shortening the db name and creating the trains node
+	var ref = trainschedule.ref("trains")
 //connect to the submit button to push the new train up to firebase///
 	$("#addTrain").on("click", function(){
 		
@@ -25,7 +24,6 @@ var trainschedule;
 		var trainName = $("#nameInput").val().trim();
 		var destination = $("#destinationInput").val().trim();
 		var firstTrainTime = moment($("#timeInput").val().trim(), "HH:mm").format("X");
-		console.log("This is the unix time " + firstTrainTime);
 		var frequency = $("#frequencyInput").val().trim();
 		
 		//store the new train data temporarily
@@ -45,12 +43,9 @@ var trainschedule;
 		$("#frequencyInput").val("");
 		$("#trainBody").empty;
 	});
-		//naming the database
-		trainschedule= firebase.database();
-		//shortening the db name and creating the trains node
-		var ref = trainschedule.ref("trains")
-
+		
 		ref.on('value', gotData);
+		//this function looks at each train and calculates the times and then adds to the DOM
 		function gotData(data){
 			var trains = data.val();
 			var keys = Object.keys(trains);
@@ -72,20 +67,15 @@ var trainschedule;
 				var tRemainder = diffTime % frequency;
 				console.log(tRemainder);
 
-				// Minute Until Train
+				// Minutes Until Train
 				var tMinutesTillTrain = frequency - tRemainder;
 				console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
-				console.log(frequency);
-				console.log(tRemainder);
 
-				// Next Train
+				// Determine when is the Next Train
 				var nextTrain = moment().add(tMinutesTillTrain, "minutes");
 				console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
 				var list = trains[k];
-					console.log(list);
-
-				//add the new train to the list
-				
+				//add the new train to the list to the DOM
 				$("#trainsList").append(
 					"<tr>" +
 					"<td>" + list.name  + "</td>" +
@@ -94,11 +84,14 @@ var trainschedule;
 					"<td>" + moment(nextTrain).format("HH:mm") + "</td>" +
 					"<td>" + tMinutesTillTrain + "</td>" + "</tr>"
 					);
-			}
-		}
-	
+			}//ends the for loop 
+		}//ends the function to look at each train and calculates the times and then adds to the DOM
 
-
+		//Removes the last row in the list
+		$('#btnDel').click(function() {
+				ref.child(list).remove;
+                $('#trainsList').find('tr:last').remove();
+            });
   
 
 });//end document.ready
